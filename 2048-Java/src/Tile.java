@@ -10,7 +10,22 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.HashMap;
+
 public class Tile {
+    private static final HashMap<Integer, Color> colorMap = new HashMap<>() {{
+        put(2, Color.GRAY);
+        put(4, Color.THISTLE);
+        put(8, Color.DARKSALMON);
+        put(16, Color.LIGHTCORAL);
+        put(32, Color.ORANGERED);
+        put(64, Color.MAROON);
+        put(128, Color.LIGHTGOLDENRODYELLOW);
+        put(256, Color.LEMONCHIFFON);
+        put(512, Color.KHAKI);
+        put(1024, Color.GOLD);
+        put(2048, Color.GOLDENROD);
+    }};
     private final int HALF_TILE = (int)Math.ceil(105.0/2);
     private final TileNode node;
     private int value;
@@ -32,6 +47,7 @@ public class Tile {
     public void setValue(int n) {
         value = n;
         node.changeText(n);
+        node.getNode().setFill(colorMap.get(n));
     }
 
     public TileNode getNode() {
@@ -49,17 +65,14 @@ public class Tile {
     public void doubleValue() {
         value <<= 1;
         node.changeText(value);
+        node.getNode().setFill(colorMap.get(value));
     }
 
-    public void place(CoorPair coordinates) {
-        onBoard = true;
-        setDimensions(105);
-        setCoordinates(coordinates);
-    }
     public void remove() {
         onBoard = false;
         setDimensions(0);
         node.changeText(0);
+        node.getNode().setFill(Color.TRANSPARENT);
     }
 
     public boolean getStatus() {

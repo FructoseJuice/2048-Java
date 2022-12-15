@@ -7,10 +7,12 @@ import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -28,6 +30,7 @@ public class Main extends Application {
     boolean lockGame = false;
     //Determines when to start spawning 4's
     int weight = 5;
+    Text score = new Text(Integer.toString(0));
 
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
@@ -35,6 +38,9 @@ public class Main extends Application {
         VBox vBox = new VBox();
         //Hud to lay buttons on
         HBox hud = new HBox();
+        Label scoreLabel = new Label("Score: ");
+        hud.getChildren().addAll(scoreLabel, score);
+
         //StackPane to layer board and squares on
         StackPane stackPane = new StackPane();
         //AnchorPane to hold tiles
@@ -293,6 +299,7 @@ public class Main extends Application {
             tileToMove.remove();
             //Double value of tile occupying space
             temp.doubleValue();
+            score.setText(Integer.toString(Integer.parseInt(score.getText()) + temp.getValue()));
         } else {
             //Change tile location in map
             spaces.get(tileToMove.getCoordinates().hashCode())[0] = null;
