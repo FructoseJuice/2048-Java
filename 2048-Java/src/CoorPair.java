@@ -23,6 +23,7 @@ public class CoorPair {
 
     public void setyCoor(double yCoor) {
         this.yCoor = yCoor;
+
     }
 
     public double getxCoor() {
