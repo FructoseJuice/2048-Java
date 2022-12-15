@@ -25,8 +25,8 @@ public class Tile {
 
     public void setCoordinates(CoorPair coordinates) {
         this.coordinates = coordinates;
-        node.getStack().setLayoutX(coordinates.getxCoor() - HALF_TILE);
-        node.getStack().setLayoutY(coordinates.getyCoor() - HALF_TILE);
+        node.getStack().setLayoutX(coordinates.xCoor() - HALF_TILE);
+        node.getStack().setLayoutY(coordinates.yCoor() - HALF_TILE);
     }
 
     public void setValue(int n) {
@@ -64,6 +64,9 @@ public class Tile {
 
     public boolean getStatus() {
         return onBoard;
+    }
+    public void setStatus(boolean status) {
+        onBoard = status;
     }
 
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
@@ -25,11 +26,9 @@ public class Main extends Application {
     private final HashMap<Integer, Tile[]> spaces = initializeSpacesMap();
     //Locks game while handling input
     boolean lockGame = false;
+    //Determines when to start spawning 4's
+    int weight = 5;
 
-//SQUARE DIMENSIONS 105x105
-//BOARD DIMENSIONS 500x500
-//SPACE BETWEEN SQUARES 15px
-    //#22201A
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         //Vbox to hold all pane Nodes
@@ -226,12 +225,12 @@ public class Main extends Application {
      * Spawns new tile in random empty space
      * @param spaces all spaces on the board
      * @param tiles list of all tiles
-     * @return code #0 indicating no empty spaces found
-     *         code #1 indicating successful spawn of new tile
      */
     private void spawnTile(HashMap<Integer, Tile[]> spaces, Tile[] tiles) {
         Random rand = new Random();
         ArrayList<CoorPair> possibleSpawnPoints = new ArrayList<>();
+
+        weight--;
 
         //Finds all possible coordinates to spawn new tile
         for ( int i = 0; i < 4; i++ ) {
@@ -247,10 +246,26 @@ public class Main extends Application {
             if (!tile.getStatus()) {
                 //Generates new random spawn point
                 CoorPair spawnPoint = possibleSpawnPoints.get(rand.nextInt(possibleSpawnPoints.size()));
+                //Set status to true
+                tile.setStatus(true);
+                //Set coordinates
+                tile.setCoordinates(spawnPoint);
+                //Animate spawn
+                AnimationTimer timer = new AnimationTimer() {
+                    int dimensions = 0;
+                    @Override
+                    public void handle(long l) {
+                        if ( dimensions == 105 ) this.stop();
+                        tile.setDimensions(dimensions+=5);
+                    }
+                };
+                timer.start();
                 //Set value of tile
-                tile.setValue(2);
-                //Place tile on board
-                tile.place(spawnPoint);
+                if (weight > 0) {
+                    tile.setValue(2);
+                } else {
+                    tile.setValue((rand.nextInt(10) > 5) ? 2 : 4);
+                }
                 //Register tile in spaces map
                 spaces.get(spawnPoint.hashCode())[0] = tile;
                 break;
