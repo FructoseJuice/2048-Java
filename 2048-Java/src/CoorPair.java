@@ -1,4 +1,4 @@
-public record CoorPair(double xCoor, double yCoor) {
+public record CoorPair(int xCoor, int yCoor) {
 
     public boolean coorEquals(CoorPair pairToCheck) {
         return (xCoor == pairToCheck.xCoor() &
@@ -13,10 +13,9 @@ public record CoorPair(double xCoor, double yCoor) {
     @Override
     public int hashCode() {
         if (xCoor >= yCoor) {
-            return (int) (Math.pow(xCoor, 2) + xCoor + yCoor);
+            return ((xCoor << 1) + xCoor + yCoor);
         } else {
-            return (int) (xCoor + Math.pow(yCoor, 2));
+            return (xCoor + (yCoor << 1));
         }
     }
-
 }

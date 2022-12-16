@@ -28,7 +28,7 @@ public class Main extends Application {
     private final HashMap<Integer, Tile[]> spaces = initializeSpacesMap();
     //Locks game while handling input
     boolean lockGame = false;
-    //Determines when to start spawning 4's
+    //Determines when to start randomly spawning 4's
     int weight = 5;
     Text score = new Text(Integer.toString(0));
 
@@ -64,6 +64,7 @@ public class Main extends Application {
         vBox.getChildren().add(stackPane);
         vBox.setPadding(new Insets(20, 20, 20, 20));
 
+        //Spawn 2 initial tiles
         spawnTile(spaces, tiles);
         spawnTile(spaces, tiles);
 
@@ -203,6 +204,7 @@ public class Main extends Application {
 
         for ( int i = 0; i < 4; i++ ) {
             for ( int j = 0; j < 4; j++ ) {
+                //Calculate and store coordinates for each space
                 spaces[i][j] = new CoorPair(
                         (15 * (j+1)) + (105 * j) + HALF_TILE,
                         (15 * (i+1)) + (105 * i) + HALF_TILE
@@ -253,14 +255,15 @@ public class Main extends Application {
                 //Generates new random spawn point
                 CoorPair spawnPoint = possibleSpawnPoints.get(rand.nextInt(possibleSpawnPoints.size()));
                 //Set status to true
-                tile.setStatus(true);
+                tile.setOnBoardStatus(true);
                 //Set coordinates
                 tile.setCoordinates(spawnPoint);
-                //Animate spawn
+                //Animate spawn by blowing up tile
                 AnimationTimer timer = new AnimationTimer() {
                     int dimensions = 0;
                     @Override
                     public void handle(long l) {
+                        //Stop once reached tile size
                         if ( dimensions == 105 ) this.stop();
                         tile.setDimensions(dimensions+=5);
                     }
@@ -274,7 +277,7 @@ public class Main extends Application {
                 }
                 //Register tile in spaces map
                 spaces.get(spawnPoint.hashCode())[0] = tile;
-                break;
+                return;
                 //return(1);
             }
         }

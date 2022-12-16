@@ -1,7 +1,3 @@
-/*
- * Each square object on the board
- */
-
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -47,7 +43,7 @@ public class Tile {
     public void setValue(int n) {
         value = n;
         node.changeText(n);
-        node.getNode().setFill(colorMap.get(n));
+        node.getNode().setFill((n <= 2048) ? colorMap.get(n) : Color.BLACK);
     }
 
     public TileNode getNode() {
@@ -63,9 +59,7 @@ public class Tile {
     }
 
     public void doubleValue() {
-        value <<= 1;
-        node.changeText(value);
-        node.getNode().setFill(colorMap.get(value));
+        setValue(value<<1);
     }
 
     public void remove() {
@@ -78,7 +72,7 @@ public class Tile {
     public boolean getStatus() {
         return onBoard;
     }
-    public void setStatus(boolean status) {
+    public void setOnBoardStatus(boolean status) {
         onBoard = status;
     }
 
