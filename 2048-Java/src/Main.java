@@ -96,6 +96,7 @@ public class Main extends Application {
                 int col;
                 int row;
                 Tile tempTile;
+                boolean moveMade = false;
 
                 switch ( dir ) {
                     case NORTH -> {
@@ -106,7 +107,7 @@ public class Main extends Application {
                                 tempTile = spaces.get(spaceCoors[row][col].hashCode())[0];
                                 if (tempTile != null) {
                                     //If tile found
-                                    computeTileMoves(tempTile, dir);
+                                    moveMade = computeTileMoves(tempTile, dir);
                                 }
                             }
                         }
@@ -120,7 +121,7 @@ public class Main extends Application {
                                 tempTile = spaces.get(spaceCoors[row][col].hashCode())[0];
                                 if (tempTile != null) {
                                     //If tile found
-                                    computeTileMoves(tempTile, dir);
+                                    moveMade = computeTileMoves(tempTile, dir);
                                 }
                             }
                         }
@@ -135,7 +136,7 @@ public class Main extends Application {
                                 tempTile = spaces.get(spaceCoors[row][col].hashCode())[0];
                                 if (tempTile != null) {
                                     //If tile found
-                                    computeTileMoves(tempTile, dir);
+                                    moveMade = computeTileMoves(tempTile, dir);
                                 }
                             }
                         }
@@ -150,7 +151,7 @@ public class Main extends Application {
                                 tempTile = spaces.get(spaceCoors[row][col].hashCode())[0];
                                 if (tempTile != null) {
                                     //If tile found
-                                    computeTileMoves(tempTile, dir);
+                                    moveMade = computeTileMoves(tempTile, dir);
                                 }
                             }
                         }
@@ -158,8 +159,10 @@ public class Main extends Application {
                     }
                 }
 
-                //Spawn new tile in empty space
-                spawnTile(spaces, tiles);
+                //Spawn new tile in empty space if move made
+                if ( moveMade ) {
+                    spawnTile(spaces, tiles);
+                }
 
                 lockGame = false;
             }
@@ -400,18 +403,20 @@ public class Main extends Application {
      * Calls @findValidMove
      * @param tile Tile to be checking
      * @param dir Direction we're moving in.
+     * @return false if no valid move found
+     *         true if valid move found
      */
-    private void computeTileMoves(Tile tile, Direction dir) {
+    private boolean computeTileMoves(Tile tile, Direction dir) {
         CoorPair tempPair;
 
         //System.out.println("TILE IS NULL?: " + (tile == null));
         //Try and find valid move
         tempPair = findValidMove(tile, dir);
 
-        //Short circuit if no valid move
-        if (tempPair == null) return;
+        if ( tempPair == null ) return false;
 
         //Move tile
         placeTile(tile, tempPair);
+        return true;
     }
 }
